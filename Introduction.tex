@@ -1,0 +1,57 @@
+\setchapterpreamble[or][.5\textwidth]{%
+\dictum[Edwin Schlossberg]{%
+The skill of writing is to create a context in which other people can think.}\vskip1em}
+
+%\setchapterpreamble[o]{%
+%\dictum[Edwin Schlossberg]{The skill of writing is to create a context in which other people can think.}}
+
+\chapter{Introduction}
+%\epigraphhead[5]{\epigraph{The skill of writing is to create a context in which other people can think.}{Edwin Schlossberg}}
+%\epigraphhead[5]{\epigraph{The skill of writing is to create a context in which other people can think.}{Edwin Schlossberg}}
+%\thispagestyle{empty}
+Modeling soft tissue by means of continuum mechanics has become an active area of research in many fields such as patient-specific surgery simulation, non-rigid image registration and cardiovascular diagnostics. However, it currently is a very young discipline that evolves at a rapid pace (and has arguably to mature much more before these methods become part of the daily clinical routine). When I was looking for literature that could be recommended to my students I felt that there is currently no real introductory textbook on this matter. This little script is to serve exactly this purpose. Although it is in most parts a short course on elasticity theory and the finite element method (FEM), it should also hint to recent research results in terms of material laws, special FEM algorithms and applications of soft tissue simulation.
+
+The intended audience of this text are postgraduate level students with a computer science or engineering background. Its purpose is to introduce the most important ideas, principles and methods in the area of soft tissue simulation and it should serve as an introductory text either for self study or accompanying a lecture. It was in particular written with two specific goals in mind. On the one hand you should be able to implement your own simple soft tissue simulation using a linear FEM algorithm once you've completed this course. On the other hand the script should give you a general idea on the topic and should serve as a good starting point for further studies. 
+
+For the impatient, here is a list of the topics currently covered by this text:
+
+\begin{itemize}
+
+		\item Introduction to elasticity: Strain, stress, balance principles and mechanical energy
+		\item Material laws: Work conjugacy, linear elasticity, hyperelasticity, viscoelasticity
+		\item The road to discretization: Variational formulation and weak form
+		\item The finite element method: Shape functions, matrix formulation, numerical integration
+		\item Time integration and projective constraint handling
+		\item Efficient real-time models: Corotated tetrahedra
+		\item Linear solvers: Conjugate gradients, preconditioners and multigrid
+			
+\end{itemize}
+
+There are many great text books and internet resources about elasticity and the FE method. For further reading and in order to complement this text I recommend the following ones which I found exceptionally useful:
+
+\begin{itemize}
+
+		\item The textbook \emph{Nonlinear solid mechanics} by Gerhard Holzapfel provides thorough, yet concrete treatment of non-linear elasticity. It's a great read especially for engineers. The notation used in this text closely follows the notation by Holzapfel, so his book would make the perfect follow up to this script if you would like to really understand elasticity theory.
+			\item If you prefer a highly mathematical treatment of the subject then the book \emph{Mathematical foundations of elasticity} by Jerrold Marsden and Thomas Hughes is definitely worth a look.
+			\item In my opinion the book \emph{Nonlinear Finite Elements for Continua and Structures} by Belitschko et al. provides an excellent introduction to the finite element method and strikes a good balance between mathematical rigor and practical examples.
+			\item If you would like to take a deeper look at error estimation methods as well as linear solver technology the book \emph{Finite Elements: Theory, Fast Solvers, and Applications in Solid Mechanics} by Dietrich Braess is a useful read.
+			\item For a more general introduction into numerics I highly recommend the book \emph{Numerical Analysis} by Endre S\"uli and David MAyers
+			\item In my opinion you cannot completely understand numerical methods without actually running them. That's why I highly recommend \url{www.solidmechanics.org} run by A.F. Bower where you can find lots of MATLAB sample code. 			
+			
+\end{itemize}
+
+Although a detailed treatment of recent research results and applications in the context of soft tissue simulation is out of scope for this document, such work is referenced in the application chapter. If you know of any work that should be listed there, please submit a pull request or write me an e-mail.
+
+I have always been fascinated how simulations turn equations and numbers into something that mimics reality. I am therefore convinced that learning about simulation methods must include seeing this process in action. In order to make this possible, this document contains a tutorial section which contains hands-on examples and exercises based on state-of-the-art open source simulation tools.
+
+This book is distributed under a CC-BY-SA license. My biggest wish is that it will be copied, edited, corrected and enhanced by anyone who finds it a good seedpoint for his/her own work. If you feel there is something missing (which there definitely is), please become an author of this book! 
+
+Finally I'd be delighted to hear from you if you found this text useful for your studies, thesis work or research. You can reach me by e-mail under suwelack(at)kit.edu. \\
+\\
+Karlsruhe, Germany, 2015\\
+\\
+Stefan Suwelack
+
+
+
+

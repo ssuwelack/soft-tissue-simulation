@@ -1,26 +1,259 @@
-\documentclass[11pt,a4paper]{book}              % Book class in 11 points
-\parindent0pt  \parskip10pt             % make block paragraphs
-\raggedright                            % do not right justify
-\usepackage{todonotes} % \todo{} comments
-\usepackage{listings}
-\usepackage{color} 						%comments in color
+\documentclass[
+%   crop, % erzeugt Schnittmarken auf A4
+]{kspbook}
+\setlength{\overfullrule}{5pt}
+%\usepackage[utf8]{inputenc} % direct input of unicode chars like äöüß
+%\usepackage[OT1]{fontenc}
+\usepackage[ngerman, english]{babel}
+\usepackage{blindtext}
+
+%\usepackage[ansinew]{inputenc}
+\usepackage[latin1]{inputenc}
+%\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+
+%
+%\usepackage{ngerman}
+
 \usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{dcolumn}
+%\usepackage{fancyhdr}
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{subfig}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage[mathscr]{euscript}
+\usepackage{makeidx}
+\usepackage{relsize}
+\usepackage{microtype}
+\usepackage{ziffer}
+\usepackage{url}
+\usepackage{tocbibind} 
+\usepackage{float}
+\usepackage{booktabs}
+%\usepackage[style=altlist,toc=true,nonumberlist,acronym=true]{glossaries}
+%\usepackage[inner=3cm,outer=4cm,top=3cm,bottom=3cm,includeheadfoot]{geometry}
+%\usepackage{amsthm}
+\usepackage[toc,page]{appendix}
+\usepackage{listings}
+
+
+\usepackage[bottom]{footmisc} % Fußnoten ans Ende der Seite
+%\usepackage[ngerman]{babel}   % Silbentrennung nach der ndR, z.B.: Sys-tem
+\usepackage{amstext}          % bietet Befehl \text{} für Text in Formeln
+\usepackage{amsfonts}         % bietet Mengensymbole, $\mathbb{R}$
+\usepackage{enumerate}        % verbessert Aufzählungen
+\usepackage{array}            % für Tabellen: bindet tabular-Umgebung ein
+\usepackage{algorithm}        % für List of Algorithms usw.
+\usepackage{algorithmicx}      % für List of Algo usw., Vorsicht: neues .sty
+\usepackage{ntheorem}
+\usepackage{theorem}
+%\usepackage{parskip}          % zw. Absätzen: eine knappe Leerzeile statt hängender Einzüge
+\usepackage{indentfirst}      % rückt in der Bibl. auch ersten Absatz ein (aus)
+\usepackage{xcolor}           % farbiger Text
+\usepackage{multicol} 	      % zur Indexerstellung in zwei Spalten
+\usepackage{url}              % für \url{http://www.test.com}
+%\usepackage[numbers, square]{natbib}   % Für \setlength{\bibsep}{3mm}; square macht eckige Klammern
+%\usepackage[isolatin]{inputenc} 
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{mathcomp}
+\usepackage[sc]{mathpazo}
+\usepackage{rotating}
+\usepackage[noend]{algpseudocode}
+\usepackage{pstool}
+\usepackage{psfrag}
+\usepackage{longtable}
+\usepackage{tabu}
+%\usepackage{subfloat}
+%\usepackage{minipage}
 \usepackage{hyperref}
 
-\title{\bf A short introduction to soft tissue simulation}    % Supply information
-\author{Stefan Suwelack (Ed.)}              %   for the title page.
-\date{\today}                           %   Use current date. 
+
+%settings from beispiel
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+%\usepackage[xindy]{glossaries}
+
+%\linespread{1.05}         % Palatino needs more leading (space between lines)
+
+\definecolor{KITBlue}{HTML}{4664aa}
+\definecolor{KITGreen}{HTML}{009682}
+\definecolor{KITRed}{rgb}{1.0,0.0,0.0}
+
+
+
+%for quotations
+\usepackage{epigraph} % mit \epigraphhead[5]{\epigraph{Zitat}{Autor}}
+\setlength{\epigraphwidth}{.5\textwidth} % Breite des Zitats
+\setlength{\beforeepigraphskip}{.5\baselineskip} % Abstand vor epigraph
+\setlength{\afterepigraphskip}{.5\baselineskip} % Abstand nach epigraph
+\setlength{\epigraphrule}{0pt} % keine Linie zw. Zitat und Autor
+
+\DeclareFontFamily{OT1}{pzc}{}
+\DeclareFontShape{OT1}{pzc}{m}{it}{<-> s * [1.10] pzcmi7t}{}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+
+\newtheorem{theorem}{Theorem}
+
+\parindent 0pt
+\setlength{\parskip}{0pt}
+%\setlength{\parsep}{0pt}
+\graphicspath{{./Bilder/}}
+
+\newenvironment{packed_itemize}{
+\begin{itemize}
+  %\setlength{\itemsep}{0pt} % Definiert den Abstand, der zwischen zwei Listenpunkten (item) zusätzlich zum normalen parsep eingefügt wird.
+  \setlength{\parskip}{0pt} % Legt den Abstand zwischen den nachfolgenden Absätzen fest.
+  %\setlength{\parsep}{0pt} % Legt innerhalb einer Liste den Abstand zwischen zwei Absätzen fest.
+  %\setlength{\topsep}{0pt} % Legt den Abstand fest, der vor und nach einer Liste zusätzlich eingefügt wird.
+  %\setlength{\topmargin}{0pt}
+}{\end{itemize}}
+
+
+\sloppy                       % nicht so streng mit Umbrüchen
+
+
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.70}
+\renewcommand{\floatpagefraction}{0.8}
+
+%\renewcommand{\figurename}{Abb.}
+%\renewcommand{\tablename}{Tab.}
+\captionsetup{format=hang,justification=justified,labelfont=bf}
+
+
+	
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}} %
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+\addtolength{\headheight}{3.0pt}
+
+
+%	\renewcommand{\headrulewidth}{0.3pt}
+
+
+
+
+\makeindex                    % Befehl für die Indexerstellung	
+                              % Obacht: stelle auch ein: TexnicCenter: Projekt / Eigenschaften
+															
+\setcounter{blindlistlevel}{2}%
+
+
+
+
+\title{\LARGE{A short introduction to \\
+soft tissue simulation}}
+\author{Stefan Suwelack (ed.)\\
+\\
+{suwelack@kit.edu}
+\vspace*{0.5cm}\\}
+%\titlehead{Kopf}
+%\subject{Typisierung}
+%\subtitle{Untertitel}
+%\date{Datum}
+%\publishers{Herausgeber}
+\lowertitleback{%
+   
+	Please help to make this book better by reporting errors or any other issue at \\
+	\url{https://github.com/ssuwelack/soft-tissue-simulation/issues}.
+	\vspace*{0.5cm}\\
+	Are you a researcher? Please add a reference to your soft tissue simulation related work in the application chapter and submit a pull request.
+	\vspace*{0.5cm}\\
+	This is a joint work in progress. If you feel you have something to contribute to an introductory text for soft tissue simulation, please become an author of this book!
+	\vspace*{0.5cm}\\
+	
+	
+		
+	Editor:	\\
+	Stefan Suwelack, suwelack@kit.edu\\
+	\vspace*{0.5cm}\\
+	
+
+    \includegraphics[scale=1]{Figures/license.pdf}
+ 
+	This work is licensed under a Creative Commons Attribution-ShareAlike $4.0$ Unported License: \\
+	\url{http://creativecommons.org/licenses/by-sa/4.0/}.
+	
+	
+}
+
+
+
+
+
+
+
+
+%\selectlanguage{ngerman}
+
+\input{GlossaryDefinitions}
+
+%\makeglossaries
+
+% customize chapter format:
+\KOMAoption{headings}{twolinechapter}
+\renewcommand*\chapterformat{\thechapter\autodot}
+
+% customize dictum format:
+\setkomafont{dictumtext}{\itshape\small}
+\setkomafont{dictumauthor}{\normalfont}
+\renewcommand*\dictumwidth{\linewidth}
+\renewcommand*\dictumauthorformat[1]{--- #1}
+\renewcommand*\dictumrule{}
+
+
+                         %   Use current date. 
 
 % Note that book class by default is formatted to be printed back-to-back.
 \begin{document}                        % End of preamble, start of text.
 \frontmatter                            % only in book class (roman page #s)
 \maketitle                              % Print title page.
 \tableofcontents                        % Print table of contents
-\mainmatter                             % only in book class (arabic page #s)
-\part{Theory}                   % Print a "part" heading
+
+\pagestyle{scrheadings}
+
+\mainmatter
+
+\part{Theory}  
+
+\input{Introduction}
+\input{BiomechanicalModeling}
+\input{NumericalSolution}
+%\input{LinearSolvers}
+
+
+\begin{appendix}
+%\input{AppendixA}
+\input{Appendix}
+\input{AppendixGlossary}
+\end{appendix}
+
+                             % only in book class (arabic page #s)
+                 % Print a "part" heading
 \part{Tutorials}
 \input{tutorials/gettingstarted.tex}
 \input{tutorials/tutorial1.tex}
+
+
+\bibliography{bibliography}
+\bibliographystyle{alpha} %for english bib
+\interlinepenalty=100
+
+\newpage                            
+\pagestyle{empty}
+
+
 \end{document}                          % The required last line
 
 

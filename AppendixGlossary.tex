@@ -1,0 +1,276 @@
+\chapter{Glossary}
+
+
+
+
+
+%\printglossaries
+\setlength{\tabulinesep}{3pt}
+
+
+    \begin{longtabu}{ R{2.4cm}  L{8cm} }
+		$\mathbf A$ & arbitrary matrix (e.g. system matrix for linear system) \\
+		$\mathcal{A}$ & additional DOF for sign enriched elements\\
+		$\mBody$ & body (object) under analysis \\
+		$\mbC$ & Cauchy-Green strain tensor \\
+		$\mboC$ & modified (isochoric) Cauchy-Green strain tensor \\
+		$\mdmat$ & damping matrix\\
+		$\mbd$ & rate of deformation tensor \\
+				$\mbdA , \mdA \mbn $& infinitesimal area element in current configuration \\
+				$\mbdA_0 , \mdA_0 \mbN $& infinitesimal area element in reference configuration \\
+				$\mdiv$ & divergence operator in current configuration \\
+				$\mDiv$ & divergence operator in reference configuration \\
+					$\mdV $& infinitesimal volume element in current configuration \\
+		$\mdVZero $& infinitesimal volume element in reference configuration \\
+		$\mbdx,\mdx_i $& line element in current configuration \\
+		$\mbdX,\mdX_i$& line element in reference configuration \\
+				$\mcdu$ & difference vector of nodal displacements \\
+						$\mcdv$ & difference vector of nodal velocities \\
+		$\mcdx$ & difference vector of nodal positions \\
+		$\mdt$ & increment during time integration \\
+
+		$\mbE$ & Green-Lagrange strain tensor \\
+		$\mElemSetVert$ & set of elements in $\mMesh$ \\
+		$\meps$ & infinitesimal strain tensor \\
+		$\mfext$, $\mfextTwo$, $\mfextThree$ & vector of external nodal forces \\
+		$\mfint$, $\mfintTwo$, $\mfintThree$ & vector of internal nodal forces \\
+		
+		$\mfintDens$ & internal force density \\	
+		$\mfintCR$, $\mfintTwoCR$, $\mfintThreeCR$ & vector of corotated internal nodal forces \\
+			$\mfintDensCR$ & internal force density \\		
+		$\mbF $& deformation gradient tensor \\
+		$\mbdotF $& time derivative of the deformation gradient tensor\\
+		$\mboF$ & modified (isochoric) deformation gradient tensor \\
+		$\mBCC$& boundary of the cut with zero Neumann (force) boundary conditions \\
+		$\mBCN$& boundary with Dirichlet (displacement) boundary conditions \\
+		$\mBCD$& boundary with Neumann (force) boundary conditions \\
+		$\mrf$ & Cauchy-elastic response function\\ %G
+		$\mgrad$ & gradient operator in current configuration\\
+		$\mGrad$ & gradient operator in reference configuration\\		
+		$\mbg$ & gravity acceleration vector \\		
+		$\mrF$ & hyperelastic response function \\%H
+		$\mH$ & Hamiltonian\\
+		$\mbI $& identity matrix \\
+		$\mbl$ & spatial velocity gradient \\
+		$\msmat$ & stiffness matrix\\
+		$\mK$ & kinetic energy \\
+		$\mL$ & Lagrangian \\
+		$\mmmat$ & mass matrix \\
+		$\mMesh$ & finite element mesh \\		
+		$\mbf, \mbffull$ & basis functions \\
+		$\mtf, \mtfTwo_{iI}$ & test functions \\
+		$\mbn$ & normal in current configuration \\
+		$\mbN$ & normal in reference configuration \\
+		$\mVert$& vertex in $\mSMesh$ \\
+		$\liftOp$& lifting operator \\
+		$\mRConf$ & region that is occupied by $\mBody$ in reference configuration \\ %Omega
+		$\mCConf$ & region that is occupied by $\mBody$ in current configuration \\
+		$\mbP$ & first Piola-Kirchhoff stress tensor \\
+		$\mbp$ & point in $\mBody$ \\
+		$\mPext$ & rate of external mechancial work (power input) \\
+		$\meFunc$ & potential energy functional\\
+		$\mPint$ & rate of internal mechanical work \\
+		$\mPsi$ & internal elastic energy \\
+		$\mrot$ & rotation matrix obtained from polar decomposition of $\mathbf F$\\
+		$\rho$ & densitiy in current configuration \\
+		$\rho_0$ & density in reference configuration \\
+		$\mbS$ & second Piola-Kirchhoff stress tensor \\
+		$\mSMesh$ & triangular surface mesh \\
+		$\msigma$ & Cauchy stress tensor\\
+		$\mt$ & traction vector in current configuration\\
+		$\mbT$ & traction vector in reference configuration\\
+		$\mTri$& element in $\mSMesh$\\
+		$\mElem$ & element in $\mMesh$ \\
+		$\mtr$ & trace operator \\
+		$\mSt$ & stretch matrix obtained from polar decomposition of $\mathbf F$\\
+     $\mbu,u_i $& displacement field \\
+		$\mcu, \mcu_J, \mcu{jJ}$ & nodal displacement field \\
+		$\mcv$& vector of nodal velocities \\
+		$\mca$& vector of nodal accelerations \\
+		$\mTFunc$ & variation of the displacement field\\
+		$\mbw$ & rate of rotation tensor \\
+		$\mv$ & velocity field	\\
+		$\mdotv$ & acceleration field	\\
+		$\mVertSetElem$ & set of vertices in $\mMesh$ \\		
+		$\mBCSPD$ & space of functions that fulfill the Dirichlet boundary conditions on $\mBCD$\\
+		$\mBCSPN$ & space of functions that fulfill the Neumann boundary conditions on $\mBCN$\\
+		
+		$\mwint$ & stress power per unit reference volume \\
+		$\mbx,x_i$& positional field in the current configuration \\
+		$\mbX,X_i $& positional field in the reference configuration \\
+		$\mcx, \mcx_J, \mcx{jJ}$ & nodal positions \\
+		
+		
+		
+    \end{longtabu}
+
+
+
+
+
+
+
+%elasticity basics
+
+%
+
+%
+%\newcommand{\mgrad}{\ensuremath{ \textnormal{grad}}}
+%\newcommand{\mGrad}{\ensuremath{ \textnormal{Grad}}}
+%\newcommand{\mdiv}{\ensuremath{ \textnormal{div}}}
+%\newcommand{\mDiv}{\ensuremath{ \textnormal{Div}}}
+%
+%\newcommand{\mddt}{\ensuremath{ \frac{\textnormal{D}}{\textnormal{Dt}}}}
+%\newcommand{\mddtS}{\ensuremath{ \frac{\textnormal{D}^2}{\textnormal{Dt}^2}}}
+%\newcommand{\mDDt}{\ensuremath{ \frac{\textnormal{D}}{\textnormal{Dt}}}}
+%
+%\newcommand{\mbU}{\ensuremath{\mathbf {U} }} 
+%\newcommand{\mbC}{\ensuremath{\mathbf {C} }} 
+%\newcommand{\mbE}{\ensuremath{\mathbf {E} }} 
+%\newcommand{\mbeps}{\ensuremath{\boldsymbol \epsilon }}
+
+
+%
+%\newcommand{\mPext}{\ensuremath{\mathcal P _{ext}}} 
+%\newcommand{\mPint}{\ensuremath{\mathcal P _{int}}} 
+%\newcommand{\mKext}{\ensuremath{\mathcal K }} 
+%\newcommand{\mK}{\ensuremath{\mathcal K }} 
+%
+%\newcommand{\mcg}{\ensuremath{\mathcal{g}}} 
+%\newcommand{\mcG}{\ensuremath{\mathcal{G}}} 
+%
+%\newcommand{\mcM}{\ensuremath{\mathcal{M}}} 
+%
+%\newcommand{\mPsi}{\ensuremath{\Psi}} 
+%
+%
+%\newcommand{\mbdF}{\ensuremath{\textnormal{d} \mathbf {f} }} 
+%
+%
+%\newcommand{\mbP}{\ensuremath{\mathbf {P} }} 
+%\newcommand{\mbS}{\ensuremath{\mathbf {S} }} 
+%
+%\newcommand{\mrho}{\ensuremath{\rho}}
+%
+%\newcommand{\mBody}{\ensuremath{\mathcal{B} }} 
+%\newcommand{\mv}{\ensuremath{\mathbf {v} }} 
+%\newcommand{\mdotv}{\ensuremath{\mathbf {\dot v} }} 
+%
+%\newcommand{\mdotu}{\ensuremath{\mathbf {\dot u} }} 
+%
+ %
+%\newcommand{\mSt}{\ensuremath{\mathbf {U }}} 
+%
+%\newcommand{\meFunc}{\ensuremath{\Pi}} 
+%\newcommand{\mH}{\ensuremath{H}} %Hamiltonian
+%\newcommand{\mL}{\ensuremath{L}} %Lagrangian
+%%\newcommand{\mPotEn}{\ensuremath{\Pi}} 
+%
+%\newcommand{\meps}{\ensuremath{\boldsymbol{\epsilon}}} 
+%
+ %
+%\newcommand{\mRConf}{\ensuremath{\Omega _0 }}  
+%\newcommand{\mCConf}{\ensuremath{\Omega }}
+%\newcommand{\mIntRConf}{\ensuremath{\int _{\Omega _0} }}
+%\newcommand{\mIntCConf}{\ensuremath{\int _{\Omega } }}
+%\newcommand{\mIntREl}{\ensuremath{\int _{\mElem} }}
+%\newcommand{\mIntBCRConf}{\ensuremath{\int _{\partial \Omega _0} }}
+%\newcommand{\mDRConf}{\ensuremath{\textnormal{dV}_0 }}
+%\newcommand{\mDCConf}{\ensuremath{\textnormal{d}\Omega }}
+%
+%\newcommand{\mcu}{\ensuremath{\mathcal{U} }} 
+%%\newcommand{\mca}{\ensuremath{\mathcal{A} }} 
+%\newcommand{\mcx}{\ensuremath{\mathcal{X} }} 
+%\newcommand{\mbf}{\ensuremath{N_J }} 
+%\newcommand{\mbffull}{\ensuremath{N_{jJ} }} 
+%\newcommand{\mtf}{\ensuremath{N_I }} 
+%\newcommand{\mtfTwo}{\ensuremath{N}} 
+%\newcommand{\mtfderiv}{\ensuremath{N_{I,i} }} 
+%\newcommand{\mtfn}{\ensuremath{N }} 
+%
+%\newcommand{\mcdx}{\ensuremath{\textnormal{d}\mathpzc{x}  }}
+%\newcommand{\mcdv}{\ensuremath{\textnormal{d}\dot{\mathcal{U}}  }}
+%\newcommand{\mcdu}{\ensuremath{\textnormal{d}{\mathcal{U}}  }}
+%
+%\newcommand{\mesym}{\ensuremath{T }} 
+%\newcommand{\mfsym}{\ensuremath{\partial T }} 
+%
+%\newcommand{\mfext}{\ensuremath{\mathbf f ^{ext}}} 
+%\newcommand{\mfextTwo}{\ensuremath{\mathbf f ^{ext}_I}} 
+%\newcommand{\mfextThree}{\ensuremath{f  ^{ext}_{iI}}} 
+%
+%\newcommand{\mfint}{\ensuremath{\mathbf f ^{int}}} 
+%\newcommand{\mfintTwo}{\ensuremath{\mathbf f ^{int}_I}} 
+%\newcommand{\mfintTwoX}{\ensuremath{\mathbf f ^{int}_I}} 
+%\newcommand{\mfintThree}{\ensuremath{f  ^{int}_{iI} }} 
+%\newcommand{\mfintDens}{\ensuremath{\hat{f}  ^{X,int}_{iI} }} 
+%\newcommand{\mfintDensTwo}{\ensuremath{\mathbf {\hat{f}} ^{int}_I}} 
+%\newcommand{\mfintDensTwoX}{\ensuremath{\mathbf {\hat{f}} ^{X,int}_I}} 
+%
+%\newcommand{\mfintCR}{\ensuremath{\mathbf f ^{int,CR}}} 
+%\newcommand{\mfintTwoCR}{\ensuremath{\mathbf f ^{int,CR}_I}} 
+%\newcommand{\mfintThreeCR}{\ensuremath{f  ^{int,CR}_{iI} }}
+%\newcommand{\mfintDensCR}{\ensuremath{\hat{f}  ^{int,CR}_{iI} }}
+%
+%\newcommand{\mnode}{\ensuremath{P}} 
+%\newcommand{\mnnode}{\ensuremath{n}} %number of all nodes
+%\newcommand{\mmnode}{\ensuremath{m}} %number of all extended nodes
+%
+%\newcommand{\mmmat}{\ensuremath{\mathbf M}} 
+%\newcommand{\msmat}{\ensuremath{\mathbf K}}
+%\newcommand{\mdmat}{\ensuremath{\mathbf D}}
+%
+%\newcommand{\mBCN}{\ensuremath{\Gamma _N}}
+%\newcommand{\mBCD}{\ensuremath{\Gamma _D}}
+%\newcommand{\mBCC}{\ensuremath{\Gamma _C}}
+%
+%\newcommand{\mBCSPD}{\ensuremath{V_D(\mBCD,\overline{\mbu})}}
+%\newcommand{\mBCSPDX}{\ensuremath{V_D(\mBCD,\overline{\mbx})}}
+%\newcommand{\mBCSPN}{\ensuremath{V_N(\mBCN,\overline{\mt})}}
+%\newcommand{\mBCSPC}{\ensuremath{V_C(\mBCC,0)}}
+%
+%
+%\newcommand{\mTFunc}{\ensuremath{\delta \mbu}}  
+%\newcommand{\mSTFunc}{\ensuremath{{C}_0 ^{\infty}}}
+%\newcommand{\mSCTFunc}{\ensuremath{{C}_0 ^{\infty} \cap V_D(\mBCD,0)}}
+%\newcommand{\mSCTFuncTwo}{\ensuremath{{C}_0 ^{0} \cap V_D(\mBCD,0)}}
+%\newcommand{\mSCTFuncThree}{\ensuremath{{H}^1  \cap V_D(\mBCD,0)}}
+%
+%\newcommand{\mSSol}{\ensuremath{{C} ^{2}(\Omega) \cap {C} ^{1} (\overline{\Omega})}}
+%\newcommand{\mSSolBC}{\ensuremath{{C} ^{2}(\Omega) \cap {C} ^{1} (\overline{\Omega}) \cap \mBCSPD \cap \mBCSPN}}
+%
+%\newcommand{\mca}{\ensuremath{{\mathcal{\ddot{U}}}}}
+%\newcommand{\mcv}{\ensuremath{{\mathcal{\dot{U}}}}}
+%
+%\newcommand{\mtvh}{\ensuremath{\hspace*{0.2em}^{t+\Delta t}\vspace*{-0.2em} }}
+%\newcommand{\mth}{\ensuremath{\hspace*{0.2em}^{t}\vspace*{-0.2em} }}
+%\newcommand{\mthZero}{\ensuremath{\hspace*{0.2em}^{0}\vspace*{-0.2em} }}
+%
+%\newcommand{\mdt}{\ensuremath{\Delta t }}
+%
+%\newcommand{\mintdt}{\textnormal{dt}}
+%
+%\newcommand{\mrot}{\ensuremath{\mathbf{R}}}
+%
+%\newcommand{\mstretchmat}{\ensuremath{\mathbf{U}}}
+%
+%\newcommand{\mMesh}{\mathcal{M}}
+%\newcommand{\mSMesh}{\mathcal{S}}
+%\newcommand{\mElem}{\tau}
+%\newcommand{\mTri}{\mathbb{T}}
+%\newcommand{\mVert}{\nu}
+%\newcommand{\mbp}{\mathbf{p}}
+%
+%\newcommand{\mElemSetVert}{\mathcal{E}}
+%\newcommand{\mVertSetElem}{\mathcal{V}}
+%
+%\newcommand{\oProd}{\otimes}
+%\newcommand{\liftOp}{\mathbf O}
+%
+%
+%
+
+
+
+
+

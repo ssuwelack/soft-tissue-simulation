@@ -1,0 +1,648 @@
+\setchapterpreamble[or][.5\textwidth]{%
+\dictum[John von Neumann]{%
+If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.}\vskip1em}
+
+\chapter{Biomechanical modeling of soft tissue}
+%\epigraphhead[5]{\epigraph{ If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is.}{ John von Neumann}}
+
+In this chapter the foundations of continuum mechanics based soft tissue modeling are introduced. We start by outlining the fundamentals of elasticity theory before presenting typical material models for biological soft tissue. 
+
+\section{Getting started}
+
+Mechanics is often defined as \emph{... a branch of physics concerned with the behaviour of physical bodies when subjected to forces or displacements, and the subsequent effect of the bodies on their environment}. You will most certainly remember some experiments from your physics class in school where you tried to calculate the paths of colliding billiard balls by using physical principles such as the energy and impulse conservation laws. If you have some background in thermodynamics you might be familiar with systems that consist of huge numbers of particles (statistical mechanics). If you had to deal with semiconductors during your studies you certainly have encountered the strange behavior of particles at the atomic and subatomic scales (quantum mechanics). Now, what is meant by the term \emph{continuum mechanics} and why is this set of methods useful for soft tissue simulation?
+
+Imagine you would like to design a computer-based training tool that allows a surgeon to practise the removal of a liver tumor (partial liver resection) before actually performing the surgery on a patient. During surgery the liver is not only subject to the forces created by surgical instruments, but also to the forces originating from breathing motions. In order to simulate the deformations (i.e. the displacement of all points inside the liver) that occur from these forces we first have to think of a suitable computer model. Keep in mind that we always want to solve the problem as fast as possible (in this case even in real-time). Thus, the model has to be as accurate as required, but as simple as possible. We would be very ill-advised to try to model the behaviour of each atom in the liver by quantum mechanics. Even the modeling of every cell in the liver would require computing power that is far beyond the capability of current hardware. To effectively model the mechanical behavior of the liver we have to turn to a macroscopic model. In this sense a liver consists of different materials such as healthy liver tissue, blood vessels or tumor tissue. We now assign these materials to the corresponding sections of the liver. Within each section the liver is assumed to be continuous. If we chop down a piece of the liver until we have an infinitesimal small element we will therefor not find any cells, molecules or atoms, but instead just an infinitesimal element of the selected material. We will later see that the analysis of infinitesimal elements is in fact what continuum mechanics is all about. 
+
+
+\section{A short introduction to elasticity}
+\subsection{Kinematics}
+We consider a body $\mBody$ that can be viewed as a continuous distribution of matter in space and choose a standard right-handed orthonormal coordinate system as the reference frame (Fig. \ref{BodyDeformation}). The body moves in space from one instant of time to another, occupying different geometrical regions $\Omega_0, ..., \Omega$ in the process. These regions are called configurations of $\mBody$ at time t. The configuration $\Omega_0$ at time $t=0$ is called the initial configuration while the configuration $\Omega$ at t is called the current configuration. Our goal is to describe the deformation of $\mBody$ with respect to a reference configuration. Throughout this text, we will always assume the initial configuration to be our reference configuration. 
+
+\begin{figure}
+   \centering   
+   \psfragfig[width=0.9\textwidth]{Figures/ContinuumBodyDeformation}
+	\caption{Deformation of the body $\mBody$ with material points $P,Q$ and infinitesimal line element $\mbdX$ from the reference configuration $\Omega_0$ to the current configuration $\Omega$ (based on \cite{Wikipedi2013})}
+\label{BodyDeformation}
+\end{figure}
+
+We start by analyzing a continuum particle $\mathbf P \in \mBody$. It is important to note that $\mathbf  P$ has no point mass (as opposed to a discrete particle in Newtonian mechanics). The particle is at position $\mbX$ in the reference configuration and moves to the position $\mbx$ in the current configuration (Fig. \ref{BodyDeformation}). We define the vector field 
+\begin{equation}
+\mbx = \mphi (\mbX,t)
+\end{equation}
+that maps the positions $\mbX \in \mathcal{B}$ of all points in the reference configuration to their respective positions $\mbx$ in the current configuration. In our analysis we assume that $\mphi$ possess a continuous derivative and that it is uniquely invertible, i.e. the inverse mapping
+\begin{equation}
+\mbX = \mphi^{-1} (\mbx,t)
+\end{equation}
+exists. Here, some important terminology should be introduced. $\mphi$ is also called the motion of the body $\mBody$ over time. If we look at $\mphi$ at a specific point in time, $\mphi$ is called the deformation of the body. Thus, we speak of deformation if we mean the motion of a body that is independent of time. A body undergoing a deformation can change its shape, position and orientation. If the deformation is constant for all $\mbX \in \mBody$, the deformation consists only of translations and rotations and is called a rigid-body motion. Please note that in contrast to the common definition of deformation which implies changes to the body's shape, the continuum mechanics definition also includes rigid body motions.
+
+Often the deformation is described in terms of the displacement
+\begin{equation}
+\mbu(\mbX,t)=\mbx(\mbX,t)-\mbX
+\label{DisplacementDefinition}
+\end{equation}
+of the body $\mBody$. 
+
+Continuum mechanics can be regarded as describing the behavior of infinitesimal line, area and volume elements during the passage from the reference to the current configuration. The second order tensor  
+\begin{equation}
+\mbF(\mbX,t) = \frac{\mbdx}{\mbdX} = \frac{\mdx_i}{\mdX_j}  = x_{i,j} = \nabla \mbx = \mGrad \mbx
+\label{DeformationGradient}
+\end{equation}
+describes the relation between the spatial line element $\mbdx$ and the material line element $\mbdX$ and is called the deformation gradient. Here, we showcased several different notations for the deformation gradient: The vectorial notation, the index notation and its shortened version as well as the notation using the nabla and the material gradient ($\mGrad$) operator. For more information on the notation of variables and operators used in this thesis please refer to the glossary. Using the relation (\ref{DisplacementDefinition}), the deformation gradient can also be expressed in terms of the displacement field $\mbu (\mbx, t)$:
+
+\begin{equation}
+\mbF(\mbX,t) = \frac{\mbdu}{\mbdX} + \mbI = u_{i,j} + \delta _{ij} = \nabla \mbu + \mbI = \mGrad \mbu + \mbI 
+\label{DeformationGradientDisplacement}
+\end{equation}
+
+Assuming that the derivative of the inverse mapping $\mphi^{-1}$ exist, we can define the inverse of the deformation gradient 
+\begin{equation}
+\mbF^{-1} = \frac{\mbdX}{\mbdx} = \mgrad \mbX
+\label{InverseDeformationGradient}
+\end{equation}
+in an analogous manner. Please notice that the lowercase $\mgrad$ operator denotes the derivative with respect to $\mbx$ (spatial gradient).
+
+\subsection{Deformation of infinitesimal elements}
+\label{DeformationOfInfinitesimalElements}
+
+In order to describe the change of infinitesimal volume elements due to deformation, we regard the parallelepiped that is spanned by the three non-coplanar line elements $\mbdX ^{(1)},\mbdX ^{(2)},\mbdX ^{(3)}$ at the point $\mbX$ in $\mBody$. Assuming that this triad is positively oriented, its volume $\mdVZero$ in the reference configuration 
+ \begin{equation}
+\mdVZero = (\mbdX^{(1)} \times \mbdX^{(2)}) \cdot \mbdX^{(3)} = \mdet (\mbdX ^{(1)},\mbdX^{(2)},\mbdX^{(3)} )
+\label{Parallelepiped}
+\end{equation}
+is given by the triple scalar product. In accordance with eq. (\ref{DeformationGradient}) we can write
+ \begin{equation}
+\mbdx^{(i)} = \mbF \mbdX^{(i)}
+\end{equation}
+and can thus derive the volume 
+ \begin{equation}
+\mdV = (\mbdx^{(1)} \times \mbdx^{(2)}) \cdot \mbdx^{(3)} = \mdet ( \mbF \mbdX ^{(1)}, \mbF \mbdX ^{(2)}, \mbF \mbdX ^{(3)} )
+\label{DeformedParallelepiped}
+\end{equation}
+of the deformed element. Using the relationship 
+\begin{equation}
+\mdet(\mathbf A \mathbf B) = \mdet(\mathbf A ) \mdet( \mathbf B)
+\end{equation}
+we can finally derive
+ \begin{equation}
+\mdV =  \mdet ( \mbF ) \mdet ( \mbdX ^{(1)},  \mbdX ^{(2)},  \mbdX ^{(3)} ) = \mdet ( \mbF ) \mdVZero \equiv J \mdVZero.
+\end{equation}
+The determinant $J$ of the deformation tensor (i.e. the Jacobian of the transformation $\mphi$) is the local ratio of current volume to reference volume of a material volume element. By definition (impenetrability of matter and non-singularity of $\mbF$), 
+ \begin{equation}
+J \equiv \mdet \mbF > 0.
+\end{equation}
+
+It is also important to point out, especially in the context of soft tissue modeling, that for incompressible materials $J = 1$.
+
+We now seek to describe the deformation of the infinitesimal surface element $\mdAZero$ with the normal $\mbN$ from its reference configuration $\mbdAZero= \mdAZero \mbN$ to its current configuration $\mbdA= \mdA \mn$. We start by expressing the volume of a deformed parallelepiped eq. (\ref{DeformedParallelepiped}) 
+ \begin{equation}
+\mdV = \mbdA \cdot \mbdx = J \mdVZero = J \mbdAZero \cdot \mbdX
+\end{equation}
+
+through its base area. Noting that
+ \begin{equation}
+ \mbdA \cdot \mbdx = \mbdA \cdot \mbF \mbdX = \mbF ^T \mbdA \cdot \mbdX,
+\end{equation}
+
+we can derive 
+ \begin{equation}
+\underbrace{(\mbF ^T \mbdA - J  \mbdAZero) }_{0} \cdot \mbdX= 0
+\end{equation}
+
+As this must hold for arbitrary line elements $\mbdX$, we can describe the deformation of the arbitrary surface element $\mbdAZero$ through the deformation gradient tensor $\mbF$:
+ \begin{equation}
+\mbdA = J \mbF^{-T} \mbdAZero
+\label{NansonsFormula}
+\end{equation}
+This relationship is known as Nanson's formula.
+
+\subsection{Strain measures}
+\label{SectionPolarDecomposition}
+
+The deformation gradient tensor characterizes the deformation of infinitesimal line, area and volume elements during the body motion. In order to construct meaningful material laws it is necessary to determine the strain (i.e. the 3D equivalent of stretch) inside a body. Strain can be described as a measure for the change in length of infinitesimal line elements. It should be pointed out that strain is not a necessarily a physically measurable quantity, but rather a theoretical concept. Consequently, many different strain measures exist. In the following, the most important strain tensors for soft tissue modeling are presented.
+
+First, it is important to understand that the deformation gradient tensor is not a suitable strain tensor; this can be seen from the polar decomposition theorem.
+
+\begin{theorem}
+The polar decomposition theorem: For any non-singular second order tensor $\mathbf A$ there exist a unique symmetric, positive definite second order tensor $\mbU$ and an orthogonal second-order tensor $\mrot$ such that
+\begin{equation}
+\mathbf A = \mrot \mbU
+\end{equation}
+\label{PolarDecompTheorem}
+\end{theorem}
+
+For a proof we refer to Ogden \cite{Ogden1997}. With respect to the deformation gradient tensor (keep in mind that it is non-singular) this means that it can be decomposed into a pure rotation matrix $\mrot$ and a pure stretch matrix $\mbU$. Thus, $\mbF$ changes under pure rigid body motions. For apparent reasons, the invariance under rigid body motions is an important property of a useful strain measure. Thus $\mbF$ cannot be directly used as a strain tensor. One possibility to recover rotational invariance is to perform a polar decomposition for each computation step and to use the remaining stretch matrix as a strain measure. Alternatively, a quadratic strain measure can be used. The first approach is often used in real-time simulations (see chapter \ref{RealTimeFEMChapter}), while the second possibility is used in classical solid mechanics as it allows for a better analytic analysis of the ensuing equations. 
+
+Upon inserting the deformation gradient tensor into the Cauchy-Green strain tensor 
+ \begin{equation}
+\mbC = \mbF ^T \mbF
+\label{CauchyGreenTensor}
+\end{equation}
+
+it is easy to see that $\mbC$ is rotation invariant (keep in mind that $\mrot^T \mrot = \mathbf I$ due to the orthogonality of $\mrot$):
+ \begin{equation}
+\mbC = \mbF ^T \mbF = (\mrot \mbU)^T \mrot \mbU =  \mbU ^T \mrot ^T \mrot \mbU = \mbU ^T  \mbU.
+\end{equation}
+
+Another important strain measure is the related Green-Lagrange strain tensor
+ \begin{equation}
+\mbE = \frac{1}{2} ( \mbC - \mbI ) =  \frac{1}{2} ( \mbF ^T \mbF - \mbI )  = \frac{1}{2} ( (\nabla \mbu + \mbI )^T (\nabla \mbu + \mbI ) - \mbI ),
+\label{GreenLagrangeTensor}
+\end{equation}
+which is also symmetric and rotation invariant. Please note that both tensors are non-linear and must be in order to be rotation invariant. In order to facilitate the development of linear elasticity theory later on, we list the infinitesimal strain tensor 
+ \begin{equation}
+\mbeps =  \frac{1}{2} ( \nabla \mbu +  \nabla \mbu ^T ),
+\label{InfinitesimalStrainTensor}
+\end{equation}
+which is the linearization of the Green-Lagrange strain tensor.
+
+\subsection{Balance principles}
+In classical continuum mechanics, the behavior of objects is governed by four conservation laws: The conservation of mass, the balance of linear and angular momentum as well as the conservation of energy. 
+
+It is intuitively clear, that the body $\mBody$ is a closed system and its mass $m$ does not change, even if $\mBody$ does occupy different geometrical regions $\Omega_0, ..., \Omega$ over time. If we denote the density of $\mBody$ with $\rho _0(\mbX)$ in the reference configuration and the density in the current configuration with $\rho (\mbx)$ we thus require the mass to be the same in the current and in the reference configuration:
+ \begin{equation}
+m = \int _{\Omega_0} \rho _0(\mbX) \mdVZero = \int _{\Omega} \rho (\mbx) \mdV = \textnormal{const.}>0
+\label{MassConservation}
+\end{equation}
+This is the conservation of mass in integral form. The linear momentum in the current configuration
+ \begin{equation}
+\int _{\Omega} \rho \mv \mdV = \int _{\Omega} \rho \dot \mbx \mdV
+\label{LinearMomentum}
+\end{equation}
+
+is changed, when $\mBody$ is subjected to external forces. In this context, so called volumetric body forces (e.g. gravity, electromagnetic forces) are distinguished from contact forces that act on the surface of $\mBody$. The gravitational body force 
+ \begin{equation}
+\int _{\Omega} \rho \mbg \mdV 
+\label{GravitationalForce}
+\end{equation}
+ can be written in its integral form using the gravitational constant $\mbg$. An analogous integral description for the contact force
+ \begin{equation}
+\int_{\partial \Omega}  \mt ( \mbx, \partial \Omega) \mbdA
+\label{ContactForce}
+\end{equation}
+can be found by defining the contact force density (or surface traction vector) $\mathbf{t} (\mathbf x, \partial \Omega)$. The balance of linear momentum can be written as
+ \begin{equation}
+\int_{\partial \Omega}  \mt (\mbx, \partial \Omega) \mbdA + \int_{\Omega}   \rho \mbg \mdV  \equiv \mddt \int _{\Omega} \rho \mv \mdV  = \int _{\Omega} \rho \mdotv \mdV. 
+\label{BalanceLinearMomentum}
+\end{equation}
+ For a body to be in complete equilibrium it is not sufficient that all internal and external forces acting on the body are in balance. Even if all external forces cancel out (static equilibrium) the body can still be subjected to a rotational motion, if these forces act on different points of the body. The rotational equilibrium is ensured by the balance of rotational momentum. By using the position vector $\mathbf r (\mbx) = \mbx - \mbx _0$ relative to a fixed point $\mbx_0$ it can be formulated as
+ \begin{equation}
+\int_{\partial \Omega}  \mathbf r \times \mathbf{t} (\mathbf x, \partial \Omega) \mbdA + \int_{\Omega}   \mathbf r \times  \rho \mbg \mdV  \equiv \mddt \int _{\Omega}  \mathbf r \times  \rho \mathbf v \mdV  = \int _{\Omega}  \mathbf r \times  \rho \mathbf{  \dot{v}} \mdV.
+\label{BalanceRotationalMomentum}
+\end{equation}
+
+
+
+
+In the context of thermodynamics the conservation of energy and the balance of momentum is supplemented by the conservation of energy. However, in the realm of soft tissue simulation the thermal effects of the body motion are extremely small and are usually neglected. Thus, the body motion can be fully described using the three balance principles described above.
+
+
+
+\subsection{The concept of stress}
+Cauchy postulated that the surface traction vector $\mathbf t$ has the same value for all boundaries with the same normal direction $\mathbf n$. In other words, $\mathbf t$ only depends on the surface normal and we can write:
+ \begin{equation}
+\mt (\mbx, \partial \Omega) = \mt (\mbx, \mn).
+\end{equation}
+From this postulate, Cauchy's fundamental stress theorem can be established.
+\begin{theorem}
+Cauchy's stress theorem: Provided that it is continuous in $\mbx$, the stress vector $\mt(\mbx, \mn)$ depends linearly on $\mn$, i.e. there exists a second order tensor field $\msigma$ independent of $\mn$, such that
+\begin{equation}
+\mt (\mbx, \mn) = \sigma (\mbx)  \mn
+\label{CauchyTheoremEquation}
+\end{equation}
+for all $\mbx$ in $\mBody$. The tensor $\msigma$ is called the Cauchy stress (or true stress) tensor.
+\end{theorem}
+
+\begin{figure}
+   \centering   
+   \psfragfig[width=0.6\textwidth]{Figures/CauchyTetrahedron}
+	\caption{Cauchy's tetrahedron: The traction $\mt^{(\mn)}$ on the surface with normal $\mn$ can be expressed as a linear combination of the tractions on the coordinate planes (based on \cite{Wikipedi2013}).}
+\label{CauchyTetrahedron}
+\end{figure}
+
+The theorem is usually proven (\cite{Ogden1997}, \cite{Bonet1997}) by constructing a tetrahedron that lies in the Cartesian rectangular planes (see Fig. \ref{CauchyTetrahedron}). After applying the balance of linear momentum eq. (\ref{BalanceLinearMomentum}) and collapsing the height of the triangle ($h \mapsto 0$) the external body and inertia forces vanish. The application of the postulate then leads to Cauchy's stress tensor. Furthermore, it can be shown that the balance of rotational momentum implies the symmetry of the Cauchy stress tensor \cite{Holzapfel2001}.
+
+As a direct consequence we can express the force
+\begin{equation}
+\mbdF =  \mt (\msigma , \mn ) \mbdA = \msigma (\mbx) \mn \mdA
+\label{SurfaceTractions}
+\end{equation}
+on an infinitesimal surface element (the so called surface tractions) in the current configuration using the Cauchy stress tensor and the surface normal. 
+
+Please note that the balance laws have so far been formulated in the current, deformed configuration. However, in a typical scenario the deformed geometry of $\mBody$ is actually the solution that we would like to solve for. It is thus impossible to integrate over the current configuration. This problem can be overcome by relating all forces to the reference configuration and solving the problem using the so called material description. In order to facilitate this formulation, we relate the surface force $\mbdF$ to the undeformed surface element $\mbdAZero$ through the use of Nanson's formula eq. (\ref{NansonsFormula}):
+\begin{equation}
+\mbdF = \sigma (\mbx) \mn \mdA = \msigma J \mbF^{-T} \mbN \mdAZero = \mathbf \mbP \mbN \mdAZero
+\end{equation}
+
+Here, we introduced the first Piola-Kirchhoff stress tensor 
+\begin{equation}
+\mbP  =  J \sigma \mbF^{-T} 
+\label{FirstPiolaKirchhoff}
+\end{equation}
+which relates surface forces in the current configuration to surface elements in the reference configuration. The passage from $\msigma$ to $\mbP$ is often referred to as the Piola transformation. Please note that, in contrast to the Cauchy stress tensor, the first Piola-Kirchhoff tensor is not symmetric (because $\mbF$ is generally not symmetric). 
+
+Many different stress measures have been proposed in the literature apart from the Cauchy and the first Piola-Kirchhoff stress tensor. At this point we will only mention the symmetric second Piola-Kirchoff stress tensor 
+\begin{equation}
+\mbS  =  J \mbF ^{-1} \msigma \mbF^{-T}  = \mbF ^{-1} \mbP = \mbS ^T
+\end{equation}
+which is very important in the context of soft tissue simulations for reasons that will be extensively discussed in chapter \ref{MaterialLawsForBiologicalSoftTissue}.
+
+
+\subsection{Boundary value problem of elasticity}
+
+The conservations laws can be combined into a single partial differential equation (PDE). Together with appropriate boundary conditions and a material law, this PDE forms a boundary value problem. We start by inserting the Cauchy stress tensor into the balance of linear momentum (eq. \ref{BalanceLinearMomentum}) to derive
+ \begin{equation}
+\int_{\partial \Omega}  \msigma (\mbx)  \mn \mdA + \int_{\Omega}   \rho \mbg \mdV  = \int _{\Omega} \rho \mdotv \mdV. 
+\label{LinearBalanceWithStressTensor}
+\end{equation}
+
+From this, Cauchy's first equation of motion 
+ \begin{equation}
+\int_{ \Omega}  \mdiv \msigma (\mbx)  \mdV  + \int_{\Omega}   \rho \mbg \mdV  = \int _{\Omega} \rho \mdotv \mdV 
+\label{CauchyEquationOfMotionGlobal}
+\end{equation}
+is derived by applying the divergence theorem (\ref{ADivergenceTheorem}) to the surface term. As this relation has to hold for any volume $\mdV$ in $\mBody$ the differential (local) form
+ \begin{equation}
+ \mdiv \msigma (\mbx)    +    \rho \mbg   =  \rho \mdotv 
+\label{CauchyEquationOfMotionLocal}
+\end{equation}
+immediately follows from the integral (global) form (\ref{CauchyEquationOfMotionGlobal}).
+
+As stated above, this partial differential equation cannot be solved when formulated in terms of the current (unknown) configuration (spatial description). Therefore, we use the mass conservation and Nanson's formula to express eq. (\ref{LinearBalanceWithStressTensor}) with respect to the reference configuration: 
+ \begin{equation}
+\int_{\partial \Omega_0}  \msigma J \mbF^{-T} \mbN \mbdAZero + \int_{\Omega _0}   \rho _0 \mbg \mdVZero  = \int _{\Omega_0} \rho _0 \mdotv \mdVZero. 
+\label{LinearBalanceWithStressTensorMaterial}
+\end{equation}
+
+Inserting the definition of the first Piola-Kirchhoff stress tensor eq. (\ref{FirstPiolaKirchhoff}) and application of the divergence theorem yields the material description of Cauchy's first equation of motion 
+ \begin{equation}
+\int_{\Omega_0}  \mDiv  \mbP  \mdVZero + \int_{\Omega _0}   \rho _0 \mbg \mdVZero  = \int _{\Omega_0} \rho _0 \mdotv \mdVZero. 
+\label{MaterialEquationOfMotion}
+\end{equation}
+
+The boundary value problem is typically stated using the local formulation 
+\begin{equation}
+ \mDiv \mbP  +    \rho _0 \mbg =  \rho _0 \mdotv \qquad \qquad \forall \mbx \in \Omega_0\\
+\label{PrimaryPDE}
+\end{equation} 
+
+of Cauchy's equation of motion in material description. In addition to the equilibrium equation, boundary conditions have to be specified on the elastic body $\mBody$ in order to pose a physically sensible problem (please see Fig. \ref{CantileverBeamBVP} for an example). The parts of the surface $\mBCD \subseteq \partial \Omega$ where the position (or the displacement) of the body are known are called Dirichlet boundary conditions. In contrast, surface tractions are imposed on the Neumann boundary $\mBCN$. In order for the problem to be well posed, either Dirichlet or Neumann boundary conditions have to be prescribed on the whole boundary ($\partial \Omega = \mBCD \cup \mBCN$). Furthermore, $\mBCD$ and $\mBCN$ are not allowed to overlap, i.e. $\mBCD \cap \mBCN = \emptyset$. By specifying the spaces of functions that satisfy these boundary conditions
+
+\begin{alignat}{1}
+\mBCSPDX &= \{ \mbx | \mbx = \overline{\mbx}  \qquad \forall \mbx \in  \mBCD \}\\ 
+\mBCSPN &= \{ \mbx | (\msigma \mn) = \overline{\mt}  \qquad \forall \mbx \in  \mBCN \}
+\end{alignat}
+
+we can finally state the boundary value problem of non-linear elasticity: 
+
+Find $\mbx \in \mSSol \cap \mBCSPDX \cap \mBCSPN $ s.t. eq. \ref{PrimaryPDE} holds.
+
+\begin{figure}
+   \centering   
+   \psfragfig[width=0.7\textwidth]{Figures/CantileverBeamBVP}
+	\caption{A cantilever beam is fixed at the left end (zero displacement at Dirichlet boundary $\mBCD$) and a uniform surface pressure is applied at the top (on Neumann boundary $\Gamma _{N1}$). Zero force boundary conditions are prescribed on all other surfaces (Neumann boundary $\Gamma _{N2}$).}
+\label{CantileverBeamBVP}
+\end{figure}
+
+\section{Material laws for biological soft tissue}
+\label{MaterialLawsForBiologicalSoftTissue}
+
+The boundary value problem introduced in the previous section cannot be solved without a constitutive equation that relates the position $\mbx$ (or the displacement $\mbu$) to the stress tensor values. In the context of elastic bodies this relationship is called the response function $\mrf (\mbF(\mbX,t), \mbX)$. In the following section we will see that some of the already encountered strain and stress measures form special (so called work conjugate) pairs. The work conjugancy relationship arises from the definition of the internal elastic energy that is stored in $\mBody$ during the deformation. Furthermore we will see that the internal elastic energy is an important concept in the context of hyperelastic material models, which are the most important class of non-linear models for soft tissue mechanics. We will also introduce basic techniques for modeling viscoelastic behavior. Finally, it is shown under which assumptions the nonlinear elasticity problem reduces to a linear problem.
+
+
+
+\subsection{Mechanical energy in elastic bodies}
+\label{SectionMechanicalEnergyInElasticBodies}
+
+If the material response is purely elastic and no energy is dissipated as heat, the balance of mechanical energy can be directly derived from the equation of motion. Multiplying Cauchy's equation of motion (\ref{CauchyEquationOfMotionLocal}) with the velocity $\mv$ yields
+ \begin{equation}
+ \mdiv \sigma \cdot \mv    +    \rho \mbg \cdot \mv  =  \rho \mdotv\cdot \mv.
+\end{equation}
+
+By using the product rule (see \ref{AProductRule}) and introducing the spatial velocity gradient $\mbl = \mgrad \mv$ we derive
+
+ \begin{equation}
+ \mdiv( \msigma \mv )  -  \msigma : \mbl     +    \rho \mbg \cdot \mv  =  \rho \mdotv \cdot \mv.
+\label{DerivationMechEnergy}
+\end{equation}
+
+We note that in light of the product differentiation rule, the mass term can be rewritten to
+
+ \begin{equation}
+\rho \mdotv \cdot \mv = \rho \frac{1}{2} \dot{\overline{\mv \cdot \mv} } = \rho \frac{\textnormal{D}}{\textnormal{Dt}} \frac{1}{2} \mv ^2.
+\end{equation}
+
+
+The spatial velocity gradient $\mbl$ is usually additively decomposed 
+ \begin{equation}
+\mbl =  \mbd + \mbw
+\label{SpatialVelocityGradient}
+\end{equation}
+into the symmetric rate of deformation tensor 
+ \begin{equation}
+\mbd = \frac{1}{2} (\mbl + \mbl ^T) = \mbd ^T
+\end{equation}
+and the antisymmetric rate of rotation sensor
+ \begin{equation}
+\mathbf {w} = \frac{1}{2} (\mathbf l - \mathbf l ^T) = - \mathbf w ^T.
+\end{equation}
+
+It is quickly shown that the material velocity gradient
+ \begin{equation}
+ \mGrad \mv = \frac{\partial \mv ( \mbX , t)}{\partial \mbX} = \mddt \frac{\partial \mphi ( \mbX , t)}{\partial \mbX} = \mbdotF
+\label{MaterialVelocityGradient}
+\end{equation}
+
+is identical to the time rate change $\mbdotF$ of the deformation gradient. The relationship between the spatial velocity gradient $\mbl$ and $\mbdotF$ is given by
+ \begin{equation}
+\mbl  = \frac{\partial \mv}{\partial \mbx} = \mddt \frac{\partial \mphi\ ( \mathbf X , t)}{\partial \mbx} = \mddt \frac{\partial \mphi\ ( \mathbf X , t)}{\partial \mbX} \frac{\partial{\mbX} }{\partial{\mbx} } = \mbdotF \mbF ^{-1}.
+\label{SpatialVelocityGradientAndDeformationGradient}
+\end{equation}
+
+We note that due to the symmetry of $\msigma$, we have
+ \begin{equation}
+\msigma : \mbl  = \msigma : \mbd+ \msigma : \mbw = \msigma : \mbd.
+\end{equation}
+
+Inserting this result into eq. (\ref{DerivationMechEnergy}) as well as using the relationship (\ref{SpatialVelocityGradient}) and subsequently integrating over the volume of the current configuration yields
+\begin{equation}
+  \mDDt \int_{ \Omega} \frac{1}{2} \rho \mv^2 \mdV +   \int_{ \Omega} \msigma : \mbd  \mdV     =  \int_{ \Omega}  \mdiv ( \msigma \mv ) \mdV + \int_{ \Omega} \rho \mbg \cdot \mv \mdV.
+\end{equation}
+
+The balance equation for mechanical energy in spatial description
+ \begin{equation}
+   \mDDt \int_{ \Omega} \frac{1}{2} \rho \mv^2 \mdV +   \int_{ \Omega} \msigma : \mbd  \mdV     =  \int_{ \partial \Omega} \mt \cdot \mv  \mdA +  \int_{ \Omega} \rho \mbg \cdot \mv \mdV 
+\label{MechEnergyBalanceSpatial}
+\end{equation}
+immediately follows from the application of the divergence theorem and the definition of the surface traction (\ref{SurfaceTractions}). The right hand side of the equilibrium equation is the external mechanical power or rate of external mechanical work
+ \begin{equation}
+\mPext (t)     =  \int_{ \partial \Omega} \mt \cdot \mv  \mbdA + \int_{ \Omega} \rho \mbg \cdot \mv \mdV  
+\end{equation}
+is the power input on the region $\Omega$. The kinetic energy
+ \begin{equation}
+\mKext (t)     =    \int_{ \Omega} \frac{1}{2} \rho  \mv^2 \mdV
+\end{equation}
+
+can be regarded as an generalization of Newtonian mechanics to continuum mechanics. If $\mKext$ is zero (i.e. no inertia forces), then the dynamic BVP reduces to a non-linear static problem. The stress power or rate of internal mechanical work is given by
+ \begin{equation}
+\mPint (t)     =   \int_{ \Omega} \msigma : \mbd  \mdV.
+\end{equation}
+
+In order to derive the balance of mechanical energy in material (Lagrangian) form, we formulate the internal mechanical work in terms of the material description: 
+\begin{alignat}{1}
+\mPint (t)    &=  \int_{ \Omega _ 0} \msigma : \mbl  J \mdVZero  = \int_{ \Omega _ 0} J \msigma :  \mbdotF \mbF ^{-1}  \mdVZero = \int_{ \Omega _ 0} J \mtr (\msigma ^T  {\mbdotF \mbF ^{-1}} ) \mdVZero \\
+&= \int_{ \Omega _ 0} J \mtr (   {\mbdotF \mbF ^{-1}} \msigma)  \mdVZero = \int_{ \Omega _ 0} J \mtr ( (   {\mbdotF \mbF ^{-1}} \msigma) ^T)  \mdVZero  \\
+&= \int_{ \Omega _ 0} J \mtr ( \msigma ^T \mbF ^{-T} \mbdotF ^T )    \mdVZero =  \int_{ \Omega _ 0} J \msigma  \mbF ^{-T} : \mbdotF     \mdVZero = \int_{ \Omega _ 0} \mbP : \mbdotF \mdVZero 
+\end{alignat}
+
+
+We furthermore define the first Piola-Kirchhoff traction vector
+ \begin{equation}
+\mbT \mbdAZero = \mt \mbdA
+\end{equation}
+
+in order establish the balance of mechanical energy in material description:
+
+ \begin{equation}
+   \mDDt \int_{ \Omega _0} \frac{1}{2}  \rho_0  \mv^2 \mdVZero +   \int_{ \Omega_0} \mbP : \mbdotF  \mdVZero     =  \int_{ \partial \Omega_0} \mbT \cdot \mv  \mbdAZero +  \int_{ \Omega_0} \rho_0 \mbg \cdot \mv \mdVZero 
+\label{MechEnergyBalanceMaterial}
+\end{equation}
+
+
+The stress power per unit reference volume 
+ \begin{equation}
+\mwint     =   J \msigma : \mbd   =  \mbP : \mbdotF   = \mbS : \dot{\mbE}  
+\label{WorkConjugancy}
+\end{equation}
+
+of a material is thus given by the double contraction of a stress tensor and an associated strain rate tensor. The equation above lists the most important ones of these couples known as work conjugate pairs (please refer to the appendix \ref{WorkConjugancySE} on how to derive the work conjugacy of the second Piola-Kirchhoff stress tensor $\mbS$ and the material time derivative of the Green-Lagrange strain tensor $\dot{\mbE}$). 
+
+
+\subsection{Hyperelastic materials}
+
+Biological soft tissue is usually modeled using a phenomenological approach. Based on \emph{in vitro} or \emph{in vivo} measurements, mathematical models are fitted to experimental data that describe the stress-strain relationship. In this section, the important hyperelastic approach to soft tissue modeling is discussed. Although only isotropic hyperelastic materials are considered at this point, the approach can be extended to include anisotropic material behavior \cite{Holzapfel2001}. The extension of the model to viscoelastic material response is detailed in the subsequent section.
+
+Materials are called Cauchy-elastic if the stress field in the deformed configuration only depends on the state of deformation and not on the deformation history. That means we can define a so called response function $\mrf$ that relates the deformation gradient tensor $\mbF$ to the Cauchy stress field $\msigma$:
+
+ \begin{equation}
+\msigma(\mbx, t) = \mrf (\mbF(\mbX,t),\mbX)  
+\end{equation}
+
+By inserting this definition into the already familiar Piola transformation 
+ \begin{equation}
+\mbP = J \msigma \mbF ^{-T} =   J \mcG(\mbF) \mbF ^{-T} = \mrF (\mbF)
+\end{equation}
+
+we can define the response function $\mrF$ that relates the deformation to the first Piola-Kirchhoff stress tensor. 
+
+The problem of describing a suitable response function for biological soft tissue is usually tackled by describing the internal energy of a material. For this purpose, we postulate the existence of a so called elastic potential or strain energy function $\mPsi$ that is defined per unit reference volume. Materials for which $\mPsi$ exists and only depends on the deformation ($\mPsi = \mPsi(\mbF)$) and not on the deformation history are called (pure) hyperelastic materials.  
+
+We now show how elastic response functions for work conjugate stress-strain tensors pairs can be derived from the elastic potential. The time derivative of the internal energy
+
+ \begin{equation}
+\dot \mPsi = \mwint = \mbP : \mbdotF
+\end{equation}
+
+is the internal work which can be expressed through the work conjugate pair. On the other hand, we can apply the chain rule to derive
+
+ \begin{equation}
+\dot \mPsi = \frac{\partial \mPsi}{\partial \mbF} : \mbdotF.
+\end{equation}
+
+By subtracting the above equations we obtain
+ \begin{equation}
+\left( \frac{\partial \mPsi}{\partial \mbF} - \mbP \right) : \mbdotF = 0
+\end{equation}
+
+which has to hold for arbitrary $\mbF$ and $\mbdotF$ and thus we can conclude:
+ \begin{equation}
+\mbP = \frac{\partial \mPsi}{\partial \mbF} = \mrF (\mbF)
+\end{equation}
+
+The same technique can be used to express the second Piola-Kirchhoff stress tensor
+ \begin{equation}
+\mbS = \frac{\partial \Psi}{\partial \mbE}  = \mrF (\mbE)
+\end{equation}
+in terms of the Green-Lagrange strain tensor. This relationship allows to compute the response function once the relationship between the elastic potential and the deformation is known. Please note that while hyperelastic materials (also called Green-elastic) are evidently always Cauchy-elastic, the converse is not necessarily true. Although the stress field for Cauchy-elastic materials is independent of the deformation path, in contrast to hyperleastic materials the work done (i.e. the internal energy) by the stress field can depend on the deformation history. 
+
+Naturally, material models should be constructed in a way that the boundary value problem has an (ideally unique) solution that corresponds to the physical observations. The mathematical treatment of the uniqueness and existence of non-linear elasticity problems is still an area of active research and revolves around the concept of the polyconvexity of strain-energy functions (see e.g. \cite{Hartmann2003} \cite{Hughes1994}). 
+
+On the physical level, there is one important necessary condition for the strain energy function: It should be invariant under superimposed rigid-body motions, i.e.
+ \begin{equation}
+\mPsi (\mbF) = \mPsi (\mathbf Q \mbF)
+\end{equation}
+for all orthogonal tensors $\mathbf Q$. If we choose $\mathbf Q$ to be the transpose of the orthogonal rotation tensor $\mathbf R$ that arises from the polar decomposition (see theorem \ref{PolarDecompTheorem}) of $\mbF$, 
+ \begin{equation}
+\Psi (\mbF) = \Psi (\mrot ^T \mrot \mbU) = \mPsi (\mbU)
+\end{equation}
+
+we learn that $\mPsi$ has to be independent from the rotational component $\mrot$ in order to be invariant under superimposed rigid-body motions. In classical continuum mechanics, the strain energy is usually expressed in terms of the quadratic, rotation invariant Cauchy-Green deformation tensor $\mbC$ (or the Green-Lagrange tensor $\mbE$) instead of the pure stretch tensor $\mbU$. Thus it is not necessary to perform a polar decomposition during analysis.
+
+A material is called isotropic if its properties (e.g. the stress response) are identical in all directions. This means, that the property is not affected if the reference configuration is translated or rotated. If the strain energy function is formulated in terms of the Cauchy-Green deformation tensor $\mbC$, this requirement can be expressed mathematically as
+ \begin{equation}
+\mPsi (\mbC) = \mPsi (\mathbf {Q} \mbC \mathbf{Q} ^T) 
+\label{IsotropicCondition}
+\end{equation}
+where $\mathbf Q ^T$ again denotes an arbitrary orthogonal tensor (rotation matrix). The representation theorem of invariants shows how to construct the strain energy function for isotropic materials \cite{Holzapfel2000}:
+\begin{theorem}
+The representation theorem for invariants: If a scalar-valued tensor function with the argument $\mathbf C$ is an invariant under a rotation according to (\ref{IsotropicCondition}), it may be expressed in terms of the principal invariants of $\mbC$:
+\begin{eqnarray}
+I_1(\mbC ) &=& \mtr \mbC \\
+I_2(\mbC ) &=& \frac{1}{2} \left[ (\mtr \mbC)^2 - \mtr (\mbC)^2 \right] \\
+I_3(\mbC ) &=& \mdet \mbC
+\end{eqnarray}
+\end{theorem}
+
+
+The questions remains how the strain energy function should be constructed. If $\mPsi$ is continuously differentiable with respect to the invariants, we can expand $\mPsi$ into the infinite power series
+ \begin{equation}
+\mPsi (I_1, I_2, I_3) = \sum _{p,g,r = 0} ^{\infty} c_{pgr} (I_1 - 3)^p (I_2 - 3)^q (I_3 - 1)^r.
+\end{equation}
+
+Here, the coefficients $c_{pqr}$ are the material parameters that have to be experimentally determined. Please note that this expansion has been chosen such that the material is energy-free in the reference configuration (i.e. $\mbC = \mbI$). It is a common approach to separate the strain energy functional 
+ \begin{equation}
+\mPsi  = \mPsi _{iso} + \mPsi _{vol}
+\end{equation}
+into a part $\mPsi_{vol}$ that only depends on the volume change and a so called isochoric part $\mPsi _{iso}$ that is independent of the volumetric changes \cite{Holzapfel2000}. 
+
+We have already discovered in section \ref{DeformationOfInfinitesimalElements} that $I_3 = \mdet \mbC = (\mdet \mbF)^2$ is a measure of the volumetric change during the deformation. Therefore, it is readily seen that the general expression
+ \begin{equation}
+\mPsi _{vol} = \sum _{r = 0} ^{\infty} c_r (I_3 - 1)^r
+\end{equation}
+describes an internal energy that is induced by volumetric changes. A simple and yet widely used formulation is
+ \begin{equation}
+\mPsi _{vol} =  p (I_3 - 1)^2.
+\end{equation}
+In the fully incompressible case, $p$ serves a Lagrange multiplier during the computation of the solution and can be associated with the hydrostatic pressure. In this case, p is not a material parameter, but can be determined through the incompressibility constraint. If the material is modeled as nearly incompressible (which is often the case for biological soft tissue), $p$ can be regarded as a penalty factor for the volumetric change. In this case, it is often replaced through its inverse $D_1 = 1 / p$.
+
+If the material is incompressible, there are no volume changes and the isochoric part of the strain energy 
+ \begin{equation}
+ \mPsi _{iso} (\mbC )  = \mPsi _{iso} (I_1, I_2)
+\end{equation}
+depends on the invariants $I_1, I_2$. However, these invariants vary during volumetric changes. In the context of compressible materials, the modified deformation tensor $\mboF = J^{-1/3} \mbF$ and the associated modified right Cauchy-Green tensor $\mboC = \mboF^T \mboF$ are used as deformation measures in the strain energy function. It is evident, that $\mdet \mboF = \mdet \mboC = 1$ and thus the strain energy
+ \begin{equation}
+ \mPsi _{iso} (\mboC) = \mPsi _{iso} (\overline{I}_1, \overline{I}_2)
+\end{equation}
+based on the invariants $\overline{I}_1, \overline{I}_2$ of $\mboC$ is not influenced by volumetric changes.
+
+In the following section, common material models are presented for the isochoric strain energy. Although we will formulate them for the incompressible case in the form of the potential $\Psi _{iso} (\mbC) $, it is important to note that they generalize to the compressible domain by simply using the modified formulation $\Psi _{iso} (\mboC) $ based on the modified deformation measures introduced above \cite{Holzapfel2000}.
+
+The Mooney-Rivlin material model 
+ \begin{equation}
+ \mPsi _{iso} (\mbC )  = c_1 (I_1 -3 ) + c_2 (I_2-3)
+\end{equation}
+has originally been developed for isotropic rubber-like materials and is often used for soft tissue modeling. One of the simplest hyperelastic models is the neo-Hookean model
+ \begin{equation}
+ \mPsi _{iso} (\mbC )  = c_1 (I_1 -3 ).
+\end{equation}
+The material parameter $c_1$ can be associated with the shear modulus $\mu$ by the formula $\mu = 2c_1$. The neo-Hookean model can be considered a special case of the reduced polynomial model
+ \begin{equation}
+ \mPsi _{iso} (\mbC)  = \sum _{i=1} ^N c_i (I_1 -3 )^i
+\label{ReducedPolynomialModel}
+\end{equation}
+with $N=1$ \cite{Raghunathan2010}. 
+
+The simplest model for a compressible hyperelastic material is the Saint Venant-Kirchhoff model. For simplicity reasons, its strain energy function
+ \begin{equation}
+ \mPsi  (\mbE )  = \frac{\lambda}{2} (\mtr \mbE)^2  + \mu \mtr (\mbE^2) 
+\end{equation}
+ is usually formulated in terms of the Green-Lagrange strain tensor. The parameter $\lambda$ is called Lame's first parameter, while $\mu$ denotes the shear modulus (or Lame's second parameter). The Saint-Venant Kirchhoff model is often used for real-time applications in computer graphics. It is quickly shown (see appendix \ref{ASVKModel} for details) that this model results in the linear relationship
+ \begin{equation}
+ \mbS = \frac{\partial \mPsi}{\partial \mbE} = \lambda (\mtr{\mbE}) \mbI + 2\mu \mbE
+\label{SaintVenantKirchhoff}
+\end{equation}
+between $\mbS$ and $\mbE$. Although the model can be very well suited for many large displacement problems, its formulation has several disadvantages. It is not based on a decomposition of the strain energy function into an isochoric and volumetric part (the third invariant J is not even explicitly used). It is also not monotonic in compression and can thus break down for large compressive strains. Consequently it does not satisfy the polyconvexity condition.
+
+
+\subsection{Visco-elasticity}
+\label{Viscoelasticity}
+
+The stress response of a biological soft tissue does not only depend on the instantaneous strain, but also on the deformation history. This can be observed during a simple indentation experiment. The material response during the loading phase is different from the unloading (\emph{recovery}) phase. In particular, the stress will only gradually decrease over time after the indenter has been completely removed. This relaxation process cannot be captured by purely hyperelastic models. A general approach to model this viscoelastic behavior is to express the time-dependent strain-energy function  
+ \begin{equation}
+ \hat{\mPsi} = \int _0 ^T G(t-s) \frac{\partial \mPsi}{\partial s} ds
+\end{equation}
+in terms of a convolution integral between the stress power and a relaxation function $G(t, \mbC)$ \cite{Taylor2008a}. In order to facilitate an efficient computation, it is often assumed that the relaxation function does not depend on the current strain. This approach to separate the purely hyperelastic material response from the viscoelastic behavior is called Quasi-Linear-Viscoelasticity (QLV) \cite{Fung1993}. A useful representation of the relaxation function $G(t)$ is given by the Prony series
+ \begin{equation}
+G(t) = G_{\inf} + \sum _{i=1} ^N G_i e^{-t/\tau _i}
+\end{equation}
+where $G_{\inf}$ is the long term modulus once the material is totally relaxed and $\tau _i$ are relaxation times. This model has a physical interpretation in form of a special spring-dashpot network that is called the generalized Maxwell model \cite{Holzapfel2000}: A spring with the stiffness $G_{inf}$ is arranged in parallel to N Maxwell elements. Each Maxwell element in turn consists of a series of one spring and one dashpot. In practice it is often much more difficult to determine $G_{inf}$ than the instantaneous (purely elastic) modulus $G_0$. By noting that
+ \begin{equation}
+G(t=0) = G_{0} =  G_{\inf} + \sum _{i=1} ^N G_i,
+\end{equation}
+the relaxation function can be described in the equivalent form
+ \begin{equation}
+G(t) = G_{0} - \sum _{i=1} ^N G_i (1- e^{-t/\tau _i}).
+\end{equation}
+If the relaxation function is normalized with $G_0$ we obtain 
+ \begin{equation}
+g(t) = 1 - \sum _{i=1} ^N g_i (1- e^{-t/\tau _i})
+\label{EqRelaxationCoeffs}
+\end{equation}
+and can subsequently express the time dependent hyperelastic material coefficients (see e.g. eq. \ref{ReducedPolynomialModel}) by the equation
+ \begin{equation}
+\hat c_{ij}(t) = c_{ij} g(t).
+\end{equation}
+
+The QLV model is considerably more computational intensive than a pure hyperelastic model. A more efficient, but less accurate approach is to use a phenomenological viscosity formulation based on the computational model. If a linear elastic model is discretized in space using the finite element method (we will discuss this procedure in detail in the next chapter) the result is the system of ordinary differential equations (ODEs)
+ \begin{equation}
+\mmmat \ddot{\mcu} + \msmat \mcu = \mfext.
+\label{LinearSpaceDiscreteForm}
+\end{equation}
+Here, $\mcu$ is a vector of nodal displacements, $\mmmat$ denotes the mass matrix, $\msmat$ is the stiffness matrix and $\mfext$ encapsulates the external forces. The idea of the widely used Rayleigh damping is to add an artificial damping term to the above equations
+ \begin{equation}
+\mmmat \ddot{\mcu} +  \mdmat \dot{\mcu}+ \msmat \mcu = \mfext.
+\end{equation}
+In this formulation the damping matrix $\mdmat$ is constructed by the linear combination 
+ \begin{equation}
+\mdmat = \alpha \mmmat+ \beta \msmat
+\end{equation}
+with the scalar coefficients $\alpha$ and $\beta$ that control the viscoelastic behavior. 
+
+The generalization of the Rayleigh damping scheme to hyperelastic materials is straightforward. In this case, the discrete form eq. (\ref{LinearSpaceDiscreteForm}) is not a linear system of ordinary differential equations, but a non-linear one. Thus, the time-discretization of the ODEs yields a non-linear system of equations. This is typically solved by iteratively solving linear systems (Newton-Raphson algorithm). During this procedure, Rayleigh damping can be employed within each linearization step. 
+
+\subsection{Linear elasticity}
+The non-linear system solve using Newton-Raphson iterations is not only computationally expensive, but can lead to instabilities especially for dynamic problems. If the deformation of the body is small (i.e. $\left\| \mGrad \mbu\right\|<<\mbI$) and the stress-strain relationship is linear, it is not necessary to solve the non-linear problem. Instead, a computationally efficient linear elasticity model can be used. It is important to point out that this model is often used for metals. However, soft tissue deformations are usually large and the small strain assumption is thus not justified. Also, as discussed above, the material response of soft tissue is highly non-linear. It can thus be expected (and will indeed be shown in study presented in the next section) that the linear model introduces a significant error in soft tissue simulation. However, we will see in the following chapter that linear elasticity serves as an important building block for real-time capable algorithms. Therefore, the model will be presented in this section. For a more mathematical rigorous derivation of the linear model from the presented non-linear, hyperelastic model we refer to the textbook by Ogden \cite{Ogden1997}.
+
+In the context of linear elasticity it is often more convenient to use the displacement $\mbu$ (see eq. \ref{DisplacementDefinition}) as the primary variable. Recalling the relationship between $\mbF$ and $\mbu$ eq. (\ref{DeformationGradientDisplacement}) we can derive 
+ \begin{equation}
+\mGrad \mbu = \frac{\partial u_i}{\partial X_j} = \frac{\partial u_i}{\partial x_k}  \frac{\partial x_k}{\partial X_j} = (\mgrad \mbu) \mbF = \mgrad \mbu (\mGrad \mbu + \mbI)
+\end{equation}
+Thus it follows that under the small strain (linear) approximation $\mGrad \mbu$ and $\mgrad \mbu$ can be used interchangeably. In other words, as the reference configuration and the deformed configuration are nearly identical, i.e. the spatial and material derivative are the nearly the same. Consequently, the already defined infinitesimal strain tensor
+ \begin{equation}
+\meps = \frac{1}{2} (\mGrad \mbu + (\mGrad \mbu)^T) = \frac{1}{2} (\mgrad \mbu + (\mgrad \mbu)^T)
+\end{equation}
+can be alternatively expressed through a spatial derivative. Under these approximations, the rate deformation tensor 
+ \begin{equation}
+\mbd = \frac{1}{2} (\mgrad \mv + (\mgrad \mv)^T) \approx \dot{\meps}
+\end{equation}
+can be regarded as the time derivative of the infinitesimal strain tensor. This leads to the important finding that in the framework of linear elasticity, $\dot{\meps}$ is work conjugated to the Cauchy stress tensor $\msigma$ (see eq. \ref{WorkConjugancy}). Under the small strain assumption the strain energy rate per unit reference volume can be approximated by the strain energy rate per unit deformed volume, i.e.
+ \begin{equation}
+\dot {\mPsi} = J \msigma : \dot{\meps} \approx \msigma : \dot{\meps}.
+\end{equation}
+Through this result we can establish the material law using the hyperelastic strain energy based approach. As the purpose of the small strain approximation is to achieve a completely linear formulation, the Saint-Venant Kirchhoff model is the obvious choice. With the previous results eq. (\ref{SaintVenantKirchhoff}) we obtain
+ \begin{equation}
+\msigma = \frac{\partial \mPsi}{\partial \meps} = \lambda \mtr{\meps} \mbI + 2 \mu \meps   .
+\label{LinearMaterialLaw}
+\end{equation}
+
+In order to compactly state the linear elastic BVP we again define the function spaces that satisfy the boundary conditions
+\begin{alignat}{1}
+\mBCSPD &= \{ \mbu | \mbu = \overline{\mbu}  \qquad \forall \mbu \in  \mBCD \} \label{FunctionSpaceDirichlet}\\ 
+\mBCSPN &= \{ \mbu | (\msigma \mn) = \overline{\mt}  \qquad \forall \mbu \in  \mBCN \} \label{FunctionSpaceNeumann}
+\end{alignat}
+on the Dirichlet boundary $\mBCD$ and on the Neumann boundary $\mBCN$, respectively. By using the Cauchy stress in the spatial Cauchy equation of motion eq. (\ref{CauchyEquationOfMotionLocal}), we can formulate the complete, displacement-based boundary value problem for linear elasticity: Find $\mbu \in \mSSol \cap \mBCSPD \cap \mBCSPN $ s.t.
+\begin{alignat}{1}
+& \mDiv  \msigma  +    \rho _0 \mbg   =  \rho _0 \ddot{\mbu} \qquad \qquad \forall \mbu \in \Omega_0\\
+&\meps = \frac{1}{2} (\mGrad \mbu + (\mGrad \mbu)^T).
+\label{LinearElasticityFormulation}
+\end{alignat}
+
+It is very important to point out that in linear elasticity, the boundary value problem is defined in terms of the reference configuration. However, the Cauchy stress tensor is used instead of the first Piola-Kirchhoff tensor. The physical explanation for this approximation is that the reference configuration and the deformed configuration coincide and thus the Piola transform becomes unnecessary. More mathematically speaking, there exists one linear approximation of both the first Piola-Kirchhoff and the second Piola-Kirchhof stress tensor. This linear stress tensor can be identified as the Cauchy stress tensor (see Ogden for details \cite{Ogden1997}).
+
+By noting that $\mv = \dot{\mbx} = \mdotu $ we can also state the balance of mechanical energy for the linear elasticity formulation:
+ \begin{equation}
+   \mDDt \int_{ \Omega_0} \frac{1}{2}  \dot{\mbu}^2 \mdV +   \int_{ \Omega_0} \msigma : \dot{\meps}  \mdV     =  \int_{ \partial \Omega_0} \mt \cdot \mdotu   \mbdA +  \int_{ \Omega_0} \rho \mbg \cdot \mdotu \mdV
+\label{MechEnergyBalanceLinear}
+\end{equation}
+ 
+
+ 
