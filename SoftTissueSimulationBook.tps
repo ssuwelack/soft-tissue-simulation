@@ -11,14 +11,14 @@ MaxPos.x=-1
 MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
-NormalPos.right=1224
-NormalPos.bottom=196
+NormalPos.right=1242
+NormalPos.bottom=355
 Class=LaTeXView
-Document=SoftTissueSimulationBook.tex
+Document=Introduction.tex
 
 [Frame0_View0,0]
-TopLine=190
-Cursor=6236
+TopLine=0
+Cursor=601
 
 [Frame1]
 Flags=0
@@ -29,14 +29,14 @@ MaxPos.x=-1
 MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
-NormalPos.right=1224
-NormalPos.bottom=196
+NormalPos.right=1242
+NormalPos.bottom=355
 Class=LaTeXView
-Document=TutorialsOnly.tex
+Document=Applications.tex
 
 [Frame1_View0,0]
 TopLine=0
-Cursor=768
+Cursor=110
 
 [Frame2]
 Flags=0
@@ -47,14 +47,14 @@ MaxPos.x=-1
 MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
-NormalPos.right=1224
-NormalPos.bottom=196
+NormalPos.right=1242
+NormalPos.bottom=355
 Class=LaTeXView
-Document=tutorials\gettingstarted.tex
+Document=BiomechanicalModeling.tex
 
 [Frame2_View0,0]
-TopLine=37
-Cursor=2912
+TopLine=882
+Cursor=52071
 
 [Frame3]
 Flags=0
@@ -65,16 +65,70 @@ MaxPos.x=-1
 MaxPos.y=-1
 NormalPos.left=4
 NormalPos.top=26
-NormalPos.right=1224
-NormalPos.bottom=196
+NormalPos.right=1242
+NormalPos.bottom=355
 Class=LaTeXView
 Document=tutorials\tutorial1.tex
 
 [Frame3_View0,0]
-TopLine=12
+TopLine=6
 Cursor=1634
 
+[Frame4]
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-1
+MaxPos.y=-1
+NormalPos.left=4
+NormalPos.top=26
+NormalPos.right=1242
+NormalPos.bottom=355
+Class=LaTeXView
+Document=tutorials\gettingstarted.tex
+
+[Frame4_View0,0]
+TopLine=44
+Cursor=2912
+
+[Frame5]
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-1
+MaxPos.y=-1
+NormalPos.left=4
+NormalPos.top=26
+NormalPos.right=1242
+NormalPos.bottom=355
+Class=LaTeXView
+Document=SoftTissueSimulationBook.tex
+
+[Frame5_View0,0]
+TopLine=150
+Cursor=5852
+
+[Frame6]
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-1
+MaxPos.y=-1
+NormalPos.left=4
+NormalPos.top=26
+NormalPos.right=1242
+NormalPos.bottom=355
+Class=LaTeXView
+Document=NumericalSolution.tex
+
+[Frame6_View0,0]
+TopLine=0
+Cursor=189
+
 [SessionInfo]
-FrameCount=4
-ActiveFrame=0
+FrameCount=7
+ActiveFrame=5
 
