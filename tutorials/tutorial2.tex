@@ -1,20 +1,18 @@
-\chapter{Tutorial 2: Simple Liver Model with MSML}
+\chapter{Tutorial 2: Simple Beam Model with MSML}
 
 The medical simulation markup language (MSML) is a flexible XML-based description for the biomechanical modeling workflow and finite-element based biomechanical models.
 
-To simulate a simple liver you can use the example XML-file of MSML.
-If you are using the pre-built Docker container you can look at this file by executing
+The example files include several scenarios based on a simple beam model. One scenario describes a linear elastic beam under gravity load. If you are using the pre-built Docker container you can open the scenario with 
 \begin{lstlisting}[language=sh, breaklines=true]
-$ geany /opt/msml/examples/LiverExample/liverLinear.msml.xml
+$ geany /opt/msml/examples/BeamExample/beamLinearGravity.msml.xml
 \end{lstlisting}
 
-To view the results of MSML you have to create an output folder first.
-Then you can execute MSML with:
+In order to simulate the scenario the MSML exec command can be executed from the command line:
 \begin{lstlisting}[language=sh, breaklines=true]
 $ cd /opt/msml/src
 \end{lstlisting}
 \begin{lstlisting}[language=sh, breaklines=true]
-$ ./msml.py exec -o outputfolderPath /opt/msml/examples/LiverExample/liverLinear.msml.xml
+$ ./msml.py exec -o outputfolderPath /opt/msml/examples/BeamExample/beamLinearGravity.msml.xml
 \end{lstlisting}
 
 To get the help information of MSML type the following:
@@ -22,7 +20,7 @@ To get the help information of MSML type the following:
 $ ./msml.py -h (or for methods: $ ./msml.py exec -h)
 \end{lstlisting}
 
-Now you can look at the output files with ParaView:
+ParaView can be used to view the results and inspect the meshes:
 \begin{lstlisting}[language=sh, breaklines=true]
 $ cd /opt/paraview/bin
 \end{lstlisting}
@@ -30,8 +28,8 @@ $ cd /opt/paraview/bin
 $ ./paraview
 \end{lstlisting}
 
-After starting ParaView as shown in Fig. \ref{ParaViewScreenshot} you have to load the output file.
-Before you can press \emph{play} you have to click on \emph{Apply} in the tab \emph{Properties}.
+After starting ParaView as shown in Fig. \ref{ParaViewScreenshot} you have to load the output file (
+before you can press \emph{play} you have to click on \emph{Apply} in the tab \emph{Properties}). The output mesh for each timestep is usually labeled 'dispx.vtu'.
 
 \begin{figure}[h]
   	\centering
@@ -40,36 +38,32 @@ Before you can press \emph{play} you have to click on \emph{Apply} in the tab \e
     \label{ParaViewScreenshot}
 \end{figure}
 
-In order to analyze the numerical methods, change the following input parameters
-\begin{itemize}
-	\item stiffness in young modulus: 1000 up to 5000
-	\item incompressibility in poisson ratio: 0.0 up to 0.49
-\end{itemize}
-
-The parameters can be changed by opening the XML-file in a suitable text editor, e.g.
+The scenario settings (e.g. material parameters, boundary conditions) can be changed by opening the XML-file in a suitable text editor, e.g.
 \begin{lstlisting}[language=sh, breaklines=true]
-$ geany /opt/msml/examples/LiverExample/liverLinear.msml.xml &
+$ geany /opt/msml/examples/BeamExample/beamLinearGravity.msml.xml &
 \end{lstlisting}
+
+
+
 
 
 \section{Using the Python API}
 
 This section describes how to create a running script for MSML in Python.
-The absolute pathes are adapted to the pathes in the pre-built Docker container.
 
 First open an editor (e.g. geany) and create a new file \emph{myScript.py}.
 To run MSML from a python environment we need some imports as described in the following:
 \begin{lstlisting}[language=Python]
 import os
 import sys
-sys.path.insert(0, "/opt/msml/src") #to use msml imports
+sys.path.insert(0, envconf.MSML_ROOT)) #to use msml imports
 import msml.api.simulation_runner as api
 \end{lstlisting}
 
 Then you have to define the input file and the output directory:
 \begin{lstlisting}[language=Python]
 msml_infile = os.path.abspath("/opt/msml/examples/LiverExample/liverLinear.msml.xml")
-msml_outdir = os.path.abspath("/tmp/MSMLResultsLiver/")
+msml_outdir = os.path.abspath("/tmp/MSMLResultsBeam/")
 \end{lstlisting}
 
 To start MSML the following code is necessary:

@@ -1,0 +1,23 @@
+\chapter{Tutorial 3: Convergence Analysis}
+
+Running a convergence analysis is a standard tool for validating numerical algorithms. The core idea is to first compute a reference solution using a known analytical solution or a high resolution gold standard numerical procedure. Subsequently, solutions with increasing resolutions are computed and compared to the reference solution. The error is usually visualized by means of a loglog plot in term of the number of degrees of freedom or the characteristic mesh size h.
+
+The python API of MSML allows to quickly construct a convergence analysis. An python script example can be found in "/examples/ConvergenceAnalysis/Beam/ConvergenceAnalysis.py". 
+
+In order to run this example from the command line please first make sure that the MSML source is in your Python path:
+
+\begin{lstlisting}[language=sh, breaklines=true]
+$export PYTHONPATH="$PYTHONPATH:/opt/msml/src"
+\end{lstlisting}
+
+Then change to the folder that contains the script
+
+\begin{lstlisting}[language=sh, breaklines=true]
+$ cd /opt/msml/examples/ConvergenceAnalysis/Beam
+\end{lstlisting}
+
+and run it:
+
+\begin{lstlisting}[language=sh, breaklines=true]
+$python ConvergenceAnalysis.py
+\end{lstlisting}
