@@ -1,16 +1,14 @@
 \chapter{Tutorial 4: Meshing}
 
-To get a volume mesh from tomographic data you first have to define how many elements your surface mesh should have.
-To create the volume mesh you need the precalculated surface mesh and the radius-edge ratio.
-After the creation it's important to measure the quality of the generated mesh. 
-There are different types of quality mesh measures. 
-For more details look on the TetGen homepage (http://wias-berlin.de/software/tetgen/features.html).
+In order to run a soft tissue simulation a volume volume mesh has to be generated from tomographic data. MSML contains many different operators that can be combined into complex meshing pipelines that can be used for that purpose.
 
-In this tutorial the measures "edgeRatio", "volume" and "minAngle" are used.
-A python script example can be found in "/examples/MeshExample/Liver/liverMesh\_runner.py". 
-This script first creates a surface mesh with 1800 point cells. 
-After that a volume mesh is generated with a radius-edge ratio of 1.4.
-This mesh is then used for testing the measures mentioned above.
+In this tutorial we show how to execute a simple pipeline that consists of a mesh reduction step followed by the actual volumetric meshing. We also highlight how the mesh quality of the resulting volume mesh can be inspected with the respective post-processing operators.
+
+The python script example can be found in "/examples/MeshExample/Liver/liverMesh\_runner.py". It relies on a pipeline that relies on the SCVD operator for mesh reduction. This operator only takes the number of the surface points in the reduced mesh as input. For volume mesh generation we use the TetGen mesher. In this tutorial we use the radius-edge ratio of the generated volume mesh as an input parameter. More information on this and more input parameters for the mesher can be found on the TetGen homepage (http://wias-berlin.de/software/tetgen/features.html).
+
+As can be seen by opening the example script, we choose to generate a reduced surface mesh with 1800 points and generate a volume mesh with tetrahedra that have maximal radius-edge ratio of 1.4. Furthermore, the script calls MSML post-processing operators that compute various mesh quality measures. In this example the \emph{edge ration}, the element \emph{volume} as well as the \emph{minimum angle} are considered and reported after mesh generation.
+
+
 In order to run this example from the command line please first make sure that the MSML source is in your Python path:
 \begin{lstlisting}[language=sh, breaklines=true]
 $ export PYTHONPATH="$PYTHONPATH:/opt/msml/src"
@@ -28,8 +26,7 @@ and run it:
 $ python liverMesh_runner.py
 \end{lstlisting}
 
-Use ParaView to view the result and inspect the mesh. 
-You can start ParaView with the following:
+ParaView can be used to view the result and inspect the mesh:
 \begin{lstlisting}[language=sh, breaklines=true]
 $ cd /opt/paraview/bin
 \end{lstlisting}
@@ -37,15 +34,7 @@ $ cd /opt/paraview/bin
 $ ./paraview
 \end{lstlisting}
 
-Now create volume meshes with an radius-edge ratio of 5 and 20.
-For this you have to change the parameter \emph{maxEdgeRadiusRatio} in the given script.
-Also view the results in ParaView and take a screenshot for every mesh.
-How do the meshes differ? 
-Compare the quality mesh measures from the python script as well.
-
-Also try the filter function \emph{Extract Cells By Region} as shown in Fig. \ref{ParaviewFilterScreenshot}. 
-Don't forget to push the \emph{Apply} - button. 
-Take also a screenshot for each filtered mesh.
+By applying the filter function \emph{Extract Cells By Region} as shown in Fig. \ref{ParaviewFilterScreenshot} the mesh can be visualized in Paraview. 
 
 \begin{figure}[h]
   	\centering
@@ -54,5 +43,4 @@ Take also a screenshot for each filtered mesh.
     \label{ParaviewFilterScreenshot}
 \end{figure}
 
-Now create a volume mesh with 100 point cells.
-How do the generated mesh and the mesh with 1800 point cells differ (optically, quality mesh measures)?
+
