@@ -1,0 +1,27 @@
+\chapter{Tutorial 5: Shape Matching}
+
+In this tutorial we show a liver shape matching example.
+
+The python script example can be found in "/examples/PythonExamples/LiverShapeMatching/ShapeMatchingRunner.py". 
+
+In order to run this example from the command line please first make sure that the MSML source is in your Python path:
+\begin{lstlisting}[language=sh, breaklines=true]
+$ export PYTHONPATH="$PYTHONPATH:/opt/msml/src"
+\end{lstlisting}
+
+Then change to the folder that contains the script
+
+\begin{lstlisting}[language=sh, breaklines=true]
+$ cd /opt/msml/examples/PythonExamples/LiverShapeMatching
+\end{lstlisting}
+
+and run it:
+
+\begin{lstlisting}[language=sh, breaklines=true]
+$ python ShapeMatchingRunner.py
+\end{lstlisting}
+
+ParaView can be used to view the result and inspect the meshes:
+\begin{lstlisting}[language=sh, breaklines=true]
+$ /opt/paraview/bin/paraview &
+\end{lstlisting}
