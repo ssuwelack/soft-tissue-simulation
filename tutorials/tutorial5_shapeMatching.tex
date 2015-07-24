@@ -1,6 +1,6 @@
 \chapter{Tutorial 5: Shape Matching}
 
-In this tutorial we show a liver shape matching example.
+In this tutorial we show how to match a volumetric liver liver shape matching example. The algorithm is a SOFA based implementation of the \emph{Physics based Shape Matching} approach by Suwelack et al. (\url{http://dx.doi.org/10.1118/1.4896021})
 
 The python script example can be found in "/examples/PythonExamples/LiverShapeMatching/ShapeMatchingRunner.py". 
 
@@ -25,3 +25,5 @@ ParaView can be used to view the result and inspect the meshes:
 \begin{lstlisting}[language=sh, breaklines=true]
 $ /opt/paraview/bin/paraview &
 \end{lstlisting}
+
+The method provides a stable registration process over a wide range of parameters. If you would like to play around with the most important parameters (i.e. charge density, stiffness and time step) you can change them in the LiverShapeMatching.msml.xml file.
