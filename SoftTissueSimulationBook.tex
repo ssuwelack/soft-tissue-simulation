@@ -214,6 +214,10 @@ soft tissue simulation}}
 \renewcommand*\dictumauthorformat[1]{--- #1}
 \renewcommand*\dictumrule{}
 
+\makeatletter
+\@addtoreset{chapter}{part}
+\makeatother  
+
 
                          %   Use current date. 
 
@@ -235,11 +239,11 @@ soft tissue simulation}}
 %\input{LinearSolvers}
 
 
-\begin{appendix}
+\begin{appendices}
 %\input{AppendixA}
 \input{Appendix}
 \input{AppendixGlossary}
-\end{appendix}
+\end{appendices}
 
                              % only in book class (arabic page #s)
                  % Print a "part" heading
@@ -250,6 +254,9 @@ soft tissue simulation}}
 \input{tutorials/tutorial3.tex}
 \input{tutorials/tutorial4_meshing.tex}
 \input{tutorials/tutorial5_shapeMatching}
+
+
+\input{Applications.tex}
 
 \bibliography{bibliography}
 \bibliographystyle{alpha} %for english bib

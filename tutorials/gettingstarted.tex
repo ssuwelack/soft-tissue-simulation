@@ -10,7 +10,7 @@ In this section, we describe how to run a pre-configured deployment of the Simul
 	\item Install the Docker framework for your Linux distribution. Further details can be found on the Docker homepage. For Ubuntu Linux there is the possibility to use either pre-configured packages (see \url{www.ubuntuupdates.org/ppa/docker} or to install Docker manually (\url{http://docs.docker.com/installation/ubuntulinux/}).
 	\item Optional: You can add your user to the docker group in order to avoid the use ofsudo in front of the docker commands:
 		\begin{lstlisting}[language=sh]
-  $ sudo -aG docker username
+  $ sudo usermod -aG docker username
 \end{lstlisting}
 Please remember to log out in order to for the changes to take effect.
 	\item Pull the SOFA container from the Docker Hub: 

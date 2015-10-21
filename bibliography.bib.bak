@@ -4250,7 +4250,7 @@ across multiple software platforms.},
   Publisher                = {Royal Society}
 }
 
-@InCollection{Talbot2014,
+@InCollection{talbot2014interactive,
   Title                    = {Interactive Training System for Interventional Electrocardiology Procedures},
   Author                   = {Talbot, Hugo and Spadoni, Federico and Duriez, Christian and Sermesant, Maxime and Cotin, St{\'e}phane and Delingette, Herv{\'e}},
   Booktitle                = {Biomedical Simulation},
